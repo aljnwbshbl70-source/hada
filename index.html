@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>منصة الاختبارات والشهادات - Firebase</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- مكتبة تصدير ملفات Excel -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#eef3ee;--surface:#ffffff;--ink:#14261e;--muted:#5d6f66;--line:#d6e0d8;--primary:#0f5a43;--primary-ink:#ffffff;--gold:#a8832c;--soft:#e2efe8;--danger:#b3392f;--danger-soft:#fbe9e7;--head1:#0b3d2e;--head2:#14614a;--font-d:'Amiri',serif;--font-b:'Tajawal',system-ui,sans-serif}
+body.dark-mode{--bg:#0b1812;--surface:#112219;--ink:#e6efe8;--muted:#9bb0a4;--line:#23402f;--primary:#3fae86;--primary-ink:#06231a;--gold:#d6b25e;--soft:#183528;--danger:#ef8a80;--danger-soft:#3a1d1a;--head1:#08281e;--head2:#0f4535;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:16px;line-height:1.6;transition:background .3s,color .3s}
+header.top{background:linear-gradient(160deg,var(--head1),var(--head2));color:#fff;text-align:center;padding:24px 16px 40px;border-bottom:4px solid var(--gold);border-radius:0 0 36px 36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='%23d6b25e' stroke-opacity='.28'%3E%3Crect x='17' y='17' width='26' height='26'/%3E%3Crect x='17' y='17' width='26' height='26' transform='rotate(45 30 30)'/%3E%3C/g%3E%3C/svg%3E"),linear-gradient(160deg,var(--head1),var(--head2))}
+.bism{font-family:var(--font-d);font-size:30px;color:#e6c46f;margin:0 0 4px}
+header.top h1{margin:0;font-size:19px;font-weight:500}
+main{max-width:660px;margin:-22px auto 90px;padding-inline:16px}
+main.wide{max-width:980px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:14px}
+label.f{display:block;font-weight:700;margin:14px 0 6px;color:var(--primary)}
+input[type=text],input[type=password],input[type=date],input[type=number],input[type=tel],input:not([type]),textarea,select{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--bg);color:var(--ink)}
+textarea{min-height:76px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:3px solid rgba(15,150,110,.35);outline-offset:1px}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:11px 18px;font-weight:700;background:var(--soft);color:var(--primary)}
+button.pri{background:var(--primary);color:var(--primary-ink)}
+button.dan{background:var(--danger-soft);color:var(--danger)}
+button.full{width:100%;margin-top:18px;padding:14px}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grow{flex:1;min-width:150px}
+.err{background:var(--danger-soft);color:var(--danger);padding:10px 12px;border-radius:10px;margin-top:14px;font-weight:500}
+.dua{font-family:var(--font-d);text-align:center;color:var(--primary);font-size:22px;margin:0 0 14px}
+.bar{height:8px;background:var(--soft);border-radius:8px;overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--primary))}
+.meta{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:12px}
+.qtype{display:inline-block;background:var(--soft);color:var(--primary);padding:2px 12px;border-radius:20px;font-size:13px;font-weight:700}
+.qtext{font-size:20px;line-height:1.8;margin:12px 0 16px;font-weight:500;overflow-wrap:anywhere}
+.opt{display:flex;gap:10px;align-items:center;width:100%;text-align:right;background:var(--bg);border:1.5px solid var(--line);color:var(--ink);margin-bottom:10px;padding:13px;font-weight:500;font-size:17px}
+.opt b{flex:0 0 30px;height:30px;border-radius:50%;background:var(--soft);color:var(--primary);display:grid;place-items:center;font-size:14px}
+.opt.sel{border-color:var(--primary);background:var(--soft)}
+.opt.sel b{background:var(--primary);color:var(--primary-ink)}
+.nav{display:flex;gap:10px;margin-top:8px}
+.nav button{flex:1}
+.res{text-align:center}
+.res .big{font-family:var(--font-d);font-size:58px;color:var(--primary);margin:4px 0}
+.wrong{text-align:right;border-top:1px dashed var(--line);padding:12px 0}
+.wrong .y{color:var(--danger)} .wrong .c{color:var(--primary);font-weight:700}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tabs button.on{background:var(--primary);color:var(--primary-ink)}
+.tag{font-size:12px;padding:2px 10px;border-radius:20px;font-weight:700;display:inline-block}
+.t-on{background:var(--soft);color:var(--primary)} .t-off{background:var(--danger-soft);color:var(--danger)}
+.sub{font-size:13px;color:var(--muted)}
+.link{direction:ltr;text-align:left;font-size:13px;background:var(--bg);border:1px dashed var(--line);padding:7px 10px;border-radius:8px;overflow-wrap:anywhere;margin:8px 0}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+td,th{padding:9px 8px;border-bottom:1px solid var(--line);text-align:right;font-size:14px;vertical-align:top}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.q{border:1.5px dashed var(--line);border-radius:12px;padding:12px;margin:10px 0}
+.oq{display:flex;gap:8px;align-items:center;margin-top:6px}
+.oq input[type=radio]{width:auto;flex:none}
+.chk{display:flex;gap:8px;align-items:center;font-weight:500;margin-top:6px}
+.chk input{width:auto}
+.pick{cursor:pointer}
+.pick:hover{border-color:var(--primary)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.sbox{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.sbox b{display:block;font-family:var(--font-d);font-size:30px;color:var(--primary);line-height:1.2}
+.pbar{height:10px;background:var(--soft);border-radius:6px;overflow:hidden;min-width:90px}
+.pbar i{display:block;height:100%;background:var(--primary)}
+.hard-q{background:var(--danger-soft);border-color:var(--danger)}
+.hard-q i{background:var(--danger)}
+.rq{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--surface)}
+.ro{padding:8px 10px;border-radius:10px;margin-top:6px;border:1px solid var(--line);font-size:15px}
+.ro.good{background:var(--soft);border-color:var(--primary);color:var(--primary);font-weight:700}
+.ro.bad{background:var(--danger-soft);border-color:var(--danger);color:var(--danger);font-weight:700}
+.toast{position:fixed;inset-inline:0;bottom:0;padding:12px 16px;text-align:center;background:var(--primary);color:var(--primary-ink);font-weight:700;z-index:99}
+.toast.e{background:var(--danger);color:#fff}
+.timer{background:var(--gold);color:#fff;padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px}
+.floating-dark{position:fixed;bottom:16px;left:16px;z-index:90;border-radius:50%;width:44px;height:44px;display:grid;place-items:center;padding:0;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+
+/* تصميم شهادة الاجتياز للطباعة */
+.cert-box{background:#fff;color:#14261e;border:10px double #a8832c;padding:35px 25px;border-radius:15px;text-align:center;margin-top:20px;position:relative;box-shadow:0 0 15px rgba(0,0,0,0.05)}
+.cert-box h2{font-family:var(--font-d);color:#0f5a43;font-size:32px;margin:10px 0}
+.cert-box p{font-size:17px;margin:8px 0}
+.cert-box .c-name{font-size:26px;font-weight:700;color:#a8832c;text-decoration:underline;margin:12px 0;display:block}
+.cert-box .c-foot{display:flex;justify-space-between;margin-top:30px;font-weight:700;padding-inline:20px;font-size:15px}
+@media print{
+  body *{visibility:hidden}
+  .cert-box, .cert-box *{visibility:visible}
+  .cert-box{position:absolute;left:0;top:0;width:100%;border:6px double #a8832c}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<button class="floating-dark" id="dark-toggle" aria-label="تبديل المظهر">🌙</button>
+<div id="toast" class="toast" style="display:none"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+  getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, deleteDoc, query, where 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCURO9Qfq7CDRVrP6NCuIMnKhZEBPRgv18",
+  authDomain: "hada-ba39a.firebaseapp.com",
+  projectId: "hada-ba39a",
+  storageBucket: "hada-ba39a.firebasestorage.app",
+  messagingSenderId: "902483576940",
+  appId: "1:902483576940:web:114ddf954cecceed323049",
+  measurementId: "G-8E7T45BY9M"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const ADMIN_PASSWORD = "123"; 
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+const digits = s => String(s || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/\D/g, '');
+const normPhone = s => { var d = digits(s); return d.length >= 9 ? d.slice(-9) : d; };
+
+function toast(msg, isErr) {
+  var t = $('#toast');
+  t.textContent = msg; t.className = 'toast' + (isErr ? ' e' : ''); t.style.display = 'block';
+  clearTimeout(toast.t); toast.t = setTimeout(() => { t.style.display = 'none'; }, 2600);
+}
+
+function copy(text, done) {
+  var ok = false;
+  try {
+    var ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); document.body.removeChild(ta);
+  } catch(e){}
+  if(ok) { done(true); return; }
+  try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch(e){ done(false); }
+}
+
+function shell(inner, title, wide) {
+  return '<header class="top"><div class="bism">بسم الله الرحمن الرحيم</div><h1>' + esc(title || 'منصة الاختبارات والشهادات') + '</h1></header><main' + (wide ? ' class="wide"' : '') + '>' + inner + '</main>';
+}
+function optsOf(q) { return q.type === 'tf' ? ['صح', 'خطأ'] : q.options; }
+function busy(b, t) { b.disabled = true; b.dataset.t = b.textContent; b.textContent = t || 'جاري...'; }
+function unbusy(b) { b.disabled = false; if(b.dataset.t) b.textContent = b.dataset.t; }
+
+const urlParams = new URLSearchParams(window.location.search);
+const CODE = urlParams.get('e');
+
+/* ================= حالة الطالبة ================= */
+var st = { step: 'load', info: null, examId: '', qs: [], a: [], i: 0, res: null, err: '', warned: false, studentData: {}, timeLeft: 0, timerId: null };
+
+function startTimer(mins) {
+  if(!mins || mins <= 0) return;
+  st.timeLeft = mins * 60;
+  clearInterval(st.timerId);
+  st.timerId = setInterval(() => {
+    st.timeLeft--;
+    var el = $('#timer-display');
+    if(el) {
+      var m = Math.floor(st.timeLeft / 60), s = st.timeLeft % 60;
+      el.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+    if(st.timeLeft <= 0) {
+      clearInterval(st.timerId);
+      toast('انتهى الوقت المخصص للاختبار! جاري التسليم تلقائيًا...', true);
+      submitExam(true);
+    }
+  }, 1000);
+}
+
+function drawStudent() {
+  var title = st.info ? st.info.title : '';
+  if(st.step === 'load') { $('#app').innerHTML = shell('<div class="card"><p class="dua">جاري التحميل...</p></div>'); return; }
+  if(st.step === 'bad') { $('#app').innerHTML = shell('<div class="card"><div class="err" style="margin:0">' + esc(st.msg) + '</div></div>'); return; }
+  if(st.step === 'closed') { $('#app').innerHTML = shell('<div class="card"><div class="err" style="margin:0">هذا الاختبار مغلق حاليًا أو انتهت فترة إتاحته.</div></div>', title); return; }
+  if(st.step === 'login') {
+    $('#app').innerHTML = shell('<div class="card"><p class="dua">وقل ربّ زدني علمًا</p>' +
+     (st.info.duration > 0 ? '<div style="text-align:center;margin-bottom:10px;"><span class="timer">⏱ مدة الاختبار: ' + st.info.duration + ' دقيقة</span></div>' : '') +
+     '<label class="f" for="s-name">الاسم الثلاثي</label><input id="s-name" autocomplete="name" placeholder="مثال: فاطمة محمد أحمد">' +
+     '<label class="f" for="s-id">رقم الهوية</label><input id="s-id" inputmode="numeric" placeholder="رقم الهوية">' +
+     '<label class="f" for="s-ph">رقم الجوال</label><input id="s-ph" inputmode="tel" placeholder="05xxxxxxxx">' +
+     (st.err ? '<div class="err">' + esc(st.err) + '</div>' : '') +
+     '<button class="pri full" data-act="s-start">ابدئي الاختبار</button></div>', title);
+    return;
+  }
+  if(st.step === 'quiz') {
+    var q = st.qs[st.i], n = st.qs.length, done = st.a.filter(x => x !== null).length;
+    var timerHtml = st.info.duration > 0 ? '<span class="timer" id="timer-display">--:--</span>' : '';
+    $('#app').innerHTML = shell('<div class="card"><p class="dua">أجيبي مستعينةً بالله</p><div class="bar"><i style="width:' + ((st.i+1)/n*100) + '%"></i></div>' +
+     '<div class="meta"><span>السؤال ' + (st.i+1) + ' من ' + n + '</span>' + timerHtml + '<span>تمت الإجابة على ' + done + '</span></div>' +
+     '<span class="qtype">' + (q.type === 'tf' ? 'اختاري صح أو خطأ' : 'اختاري الإجابة الصحيحة') + '</span><div class="qtext">' + esc(q.text) + '</div>' +
+     optsOf(q).map((t, i) => '<button class="opt' + (st.a[st.i] === i ? ' sel' : '') + '" data-act="s-pick" data-i="' + i + '"><b>' + 'أبجد'.charAt(i%4) + '</b><span>' + esc(t) + '</span></button>').join('') +
+     (st.err ? '<div class="err">' + esc(st.err) + '</div>' : '') +
+     '<div class="nav"><button data-act="s-prev"' + (st.i ? '' : ' style="visibility:hidden"') + '>السابق</button><button class="pri" data-act="s-next">' + (st.i === n - 1 ? 'إنهاء الاختبار' : 'التالي') + '</button></div></div>', title);
+    return;
+  }
+  
+  // شاشة النتيجة والشهادة
+  var r = st.res, h = '<div class="card res"><p class="dua">تقبّل الله منكِ</p>';
+  if(r.mode === 'sent') {
+    h += '<div class="big">✓</div><h2>تم إرسال نتيجتك للإدارة بنجاح</h2>';
+  } else {
+    h += '<h2>نتيجتك</h2><div class="big">' + r.score + ' / ' + r.total + '</div>';
+    var percentage = Math.round((r.score / r.total) * 100);
+    
+    // التغذية الراجعة والأسئلة الخاطئة
+    if(r.showFeedback) {
+      if(r.wrong.length) {
+        h += '<div style="margin-top:20px;"><h3>التغذية الراجعة والأسئلة الخاطئة</h3>' + r.wrong.map(w => '<div class="wrong"><div><b>' + w.n + '.</b> ' + esc(w.text) + '</div><div class="y">إجابتك: ' + esc(w.yours) + '</div><div class="c">الإجابة الصحيحة: ' + esc(w.correct) + '</div></div>').join('') + '</div>';
+      } else {
+        h += '<p style="color:var(--primary);font-weight:700">ما شاء الله، إجاباتك كاملة وصحيحة 100%!</p>';
+      }
+    }
+
+    // إخراج شهادة الاجتياز
+    if(st.info.hasCert && percentage >= (st.info.passScore || 50)) {
+      var certDate = new Date().toLocaleDateString('ar-SA');
+      h += '<div class="cert-box" id="cert-area">' +
+        '<h2>🌿 شَهَادَةُ اجتياز اختبار 🌿</h2>' +
+        '<p>تشهد إدارة <b>' + esc(st.info.orgName || 'المنشأة التعليمية') + '</b> بأن الطالبة:</p>' +
+        '<span class="c-name">' + esc(st.studentData.name) + '</span>' +
+        '<p>قد اجتازت بنجاح اختبار <b>«' + esc(st.info.title) + '»</b><br>وحصلت على درجة: <b>' + r.score + ' / ' + r.total + '</b> (بنسبة ' + percentage + '%)</p>' +
+        '<p>شكرًا لكِ على اجتهادكِ وحرصكِ، بارك الله في علمكِ وزادكِ توفيقًا ونجاحًا.</p>' +
+        '<p>🌸 مع تمنياتنا لكِ بالمزيد من التقدم والتميز 🌸</p>' +
+        '<div class="c-foot"><span>التاريخ: ' + certDate + '</span><span>المعلمة: ' + esc(st.info.teacherName || 'مُعلمة المادة') + '</span></div>' +
+        '</div>' +
+        '<button class="pri full" onclick="window.print()" style="margin-top:15px">🖨️ طباعة الشهادة / حفظ PDF</button>';
+    } else if(st.info.hasCert) {
+      h += '<div class="err" style="margin-top:15px">نعتذر، لم تحققي نسبة النجاح المطلوبة للشهادة (' + st.info.passScore + '%). خيرها في غيرها!</div>';
+    }
+  }
+  $('#app').innerHTML = shell(h + '</div>', title);
+}
+
+async function initStudent() {
+  drawStudent();
+  try {
+    const qSnap = await getDocs(query(collection(db, "exams"), where("code", "==", CODE)));
+    if(qSnap.empty) {
+      st.step = 'bad'; st.msg = 'الاختبار غير موجود';
+    } else {
+      const docData = qSnap.docs[0].data();
+      st.examId = qSnap.docs[0].id;
+      st.info = docData;
+      
+      // التحقق من تاريخ انتهاء اليوم
+      var isExpired = false;
+      if(docData.date) {
+        var today = new Date().toISOString().slice(0, 10);
+        if(today > docData.date) isExpired = true;
+      }
+      
+      st.step = (docData.active && !isExpired) ? 'login' : 'closed';
+    }
+  } catch(e) {
+    st.step = 'bad'; st.msg = 'حدث خطأ في الاتصال بالخادم';
+  }
+  drawStudent();
+}
+
+async function submitExam(force) {
+  clearInterval(st.timerId);
+  var score = 0, wrong = [];
+  st.qs.forEach((q, idx) => {
+    var userAns = st.a[idx];
+    var correct = q.correct;
+    if(userAns === correct) {
+      score++;
+    } else {
+      var opts = optsOf(q);
+      wrong.push({
+        n: idx + 1,
+        text: q.text,
+        yours: userAns != null ? opts[userAns] : 'بدون إجابة',
+        correct: opts[correct]
+      });
+    }
+  });
+
+  var resultObj = {
+    examId: st.examId,
+    name: st.studentData.name,
+    nid: st.studentData.nid,
+    phone: st.studentData.phone,
+    answers: st.a,
+    score: score,
+    total: st.qs.length,
+    at: Date.now()
+  };
+
+  try {
+    await addDoc(collection(db, "results"), resultObj);
+    st.res = { score, total: st.qs.length, mode: st.info.mode, wrong, showFeedback: st.info.showFeedback };
+    st.step = 'done'; drawStudent(); window.scrollTo(0,0);
+  } catch(e) {
+    st.err = 'حدث خطأ أثناء إرسال الإجابات'; drawStudent();
+  }
+}
+
+/* ================= حالة الإدارة ================= */
+var pw = ''; try { pw = sessionStorage.getItem('akt_pw') || ''; } catch(e){}
+var A = { exams: [], ids: [], phones: [], results: [], base: window.location.origin + window.location.pathname };
+var ui = { tab: 'exams', ed: null, eerr: '', delId: null, rq: '', rv: { view: 'list' }, loginErr: '', loading: false, delRes: null };
+var modeName = { sent: 'إرسال النتيجة للإدارة فقط', score: 'عرض الدرجة فقط', full: 'الدرجة والتقرير الكامل' };
+
+async function loadAdmin() {
+  ui.loading = true; drawAdmin();
+  try {
+    const exSnap = await getDocs(collection(db, "exams"));
+    A.exams = exSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    const resSnap = await getDocs(collection(db, "results"));
+    A.results = resSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    const idsDoc = await getDoc(doc(db, "lists", "ids"));
+    A.ids = idsDoc.exists() ? idsDoc.data().items || [] : [];
+
+    const phDoc = await getDoc(doc(db, "lists", "phones"));
+    A.phones = phDoc.exists() ? phDoc.data().items || [] : [];
+
+    ui.loading = false;
+    drawAdmin();
+  } catch(e) {
+    ui.loading = false;
+    toast('تعذر تحميل البيانات من Firebase', true);
+    drawAdmin();
+  }
+}
+
+function logout() { pw = ''; try { sessionStorage.removeItem('akt_pw'); } catch(e){} drawAdmin(); }
+function examLink(e) { return A.base + '?e=' + e.code; }
+
+function drawAdmin() {
+  if(!pw) {
+    $('#app').innerHTML = shell('<div class="card" style="max-width:380px;margin:0 auto"><p class="dua">الدخول للإدارة</p><label class="f" for="pw">كلمة المرور</label><input id="pw" type="password" inputmode="numeric" autocomplete="off">' + (ui.loginErr ? '<div class="err">' + esc(ui.loginErr) + '</div>' : '') + '<button class="pri full" data-act="login">دخول</button></div>', 'لوحة الإدارة');
+    return;
+  }
+  if(ui.loading) { $('#app').innerHTML = shell('<div class="card"><p class="dua">جاري التحميل...</p></div>', 'لوحة الإدارة'); return; }
+  var tabs = [['exams', 'الاختبارات'], ['lists', 'القوائم المعتمدة'], ['results', 'النتائج والتحليلات']];
+  var h = '<div class="tabs">' + tabs.map(t => '<button data-act="tab" data-t="' + t[0] + '" class="' + (ui.tab === t[0] ? 'on' : '') + '">' + t[1] + '</button>').join('') + '<span class="grow"></span><button data-act="refresh">تحديث</button><button data-act="logout">خروج</button></div>';
+  h += ui.tab === 'exams' ? tabExams() : ui.tab === 'lists' ? tabLists() : tabResults();
+  $('#app').innerHTML = shell(h, 'لوحة الإدارة', true);
+  if(ui.tab === 'results') drawResBody();
+}
+
+function tabExams() {
+  var h = '<div style="margin-bottom:14px"><button class="pri" data-act="new-exam">+ اختبار جديد</button></div>';
+  if(ui.ed) h += editorHtml();
+  h += A.exams.map(e => {
+    var cnt = A.results.filter(r => r.examId === e.id).length;
+    return '<div class="card"><div class="row"><b class="grow">' + esc(e.title) + '</b><span class="tag ' + (e.active ? 't-on' : 't-off') + '">' + (e.active ? 'مفتوح' : 'مغلق') + '</span></div>' +
+     '<div class="sub">تاريخ الانتهاء: ' + esc(e.date) + ' · ' + e.questions.length + ' سؤال · ' + cnt + ' طالبة اختبرت · ' + (e.duration > 0 ? e.duration + ' دقيقة' : 'بدون مؤقت') + '</div>' +
+     '<div class="link">' + esc(examLink(e)) + '</div><div class="row">' +
+     '<button class="pri" data-act="copy-link" data-id="' + e.id + '">نسخ الرابط</button>' +
+     '<button data-act="toggle" data-id="' + e.id + '">' + (e.active ? 'إغلاق' : 'فتح') + '</button>' +
+     '<button data-act="edit" data-id="' + e.id + '">تعديل</button>' +
+     '<button class="dan" data-act="del" data-id="' + e.id + '">' + (ui.delId === e.id ? 'اضغطي للتأكيد' : 'حذف') + '</button></div></div>';
+  }).join('') || '<div class="card">لا توجد اختبارات بعد، اضغطي "اختبار جديد".</div>';
+  return h;
+}
+
+function blankQ() { return { text: '', type: 'mcq', options: ['', '', '', ''], correct: 0 }; }
+
+function editorHtml() {
+  var e = ui.ed;
+  return '<div class="card" id="editor"><label class="f" for="e-title">عنوان الاختبار</label><input id="e-title" value="' + esc(e.title) + '">' +
+   '<div class="two">' +
+   '<div><label class="f" for="e-date">تاريخ انتهاء الاختبار (إغلاق بنهاية اليوم)</label><input type="date" id="e-date" value="' + esc(e.date) + '"></div>' +
+   '<div><label class="f" for="e-duration">مدة الاختبار بالدقائق (0 = بدون مؤقت)</label><input type="number" id="e-duration" value="' + (e.duration || 0) + '"></div>' +
+   '</div>' +
+   '<div class="two">' +
+   '<div><label class="f" for="e-org">اسم المنشأة/الإدارة (للكتابة في الشهادة)</label><input id="e-org" value="' + esc(e.orgName || '') + '"></div>' +
+   '<div><label class="f" for="e-teacher">اسم المعلمة (للكتابة في الشهادة)</label><input id="e-teacher" value="' + esc(e.teacherName || '') + '"></div>' +
+   '</div>' +
+   '<div class="row" style="margin-top:12px">' +
+   '<label class="chk"><input type="checkbox" id="e-active"' + (e.active ? ' checked' : '') + '> الاختبار مفتوح</label>' +
+   '<label class="chk"><input type="checkbox" id="e-feedback"' + (e.showFeedback ? ' checked' : '') + '> إظهار الإجابات الصحيحة والتغذية الراجعة للطالبة</label>' +
+   '<label class="chk"><input type="checkbox" id="e-cert"' + (e.hasCert ? ' checked' : '') + '> إصدار شهادة اجتياز</label>' +
+   '</div>' +
+   '<div class="two" style="margin-top:10px">' +
+   '<div><label class="f" for="e-passScore">نسبة النجاح للشهادة (%)</label><input type="number" id="e-passScore" value="' + (e.passScore || 50) + '"></div>' +
+   '<div><label class="f" for="e-mode">طريقة عرض النتيجة</label><select id="e-mode">' + Object.keys(modeName).map(k => '<option value="' + k + '"' + (e.mode === k ? ' selected' : '') + '>' + modeName[k] + '</option>').join('') + '</select></div>' +
+   '</div>' +
+   '<div class="row" style="margin-top:12px"><label class="chk"><input type="checkbox" id="e-cid"' + (e.checkId ? ' checked' : '') + '> التحقق من رقم الهوية من القائمة المعتمدة</label>' +
+   '<label class="chk"><input type="checkbox" id="e-cph"' + (e.checkPhone ? ' checked' : '') + '> التحقق من الجوال من القائمة المعتمدة</label></div>' +
+   '<h3>الأسئلة</h3><div id="qs">' + e.questions.map(qHtml).join('') + '</div>' +
+   '<div class="row"><button data-act="add-q">+ إضافة سؤال</button></div>' + (ui.eerr ? '<div class="err">' + esc(ui.eerr) + '</div>' : '') +
+   '<div class="row" style="margin-top:14px"><button class="pri" data-act="save-exam">حفظ الاختبار</button><button data-act="cancel-exam">إلغاء</button></div></div>';
+}
+
+function qHtml(q, i) {
+  var o = q.type === 'tf' ? ['صح', 'خطأ'] : q.options;
+  return '<div class="q" data-i="' + i + '"><div class="row"><b>سؤال ' + (i+1) + '</b><select class="qtype-sel" style="width:auto"><option value="mcq"' + (q.type === 'mcq' ? ' selected' : '') + '>اختيار من متعدد</option><option value="tf"' + (q.type === 'tf' ? ' selected' : '') + '>صح / خطأ</option></select><span class="grow"></span><button class="dan" data-act="rm-q" data-i="' + i + '">حذف</button></div>' +
+   '<textarea class="qt" aria-label="نص السؤال" placeholder="نص السؤال">' + esc(q.text) + '</textarea>' +
+   o.map((t, k) => '<div class="oq"><input type="radio" name="c' + i + '" value="' + k + '"' + (q.correct === k ? ' checked' : '') + ' aria-label="إجابة صحيحة">' + (q.type === 'tf' ? '<span>' + t + '</span>' : '<input class="ot" value="' + esc(t) + '" placeholder="الخيار ' + (k+1) + '">') + '</div>').join('') +
+   (q.type === 'mcq' ? '<button style="margin-top:8px" data-act="add-opt" data-i="' + i + '">+ خيار</button>' : '') +
+   '</div>';
+}
+
+function syncEd() {
+  var e = ui.ed; if(!e || !$('#e-title')) return;
+  e.title = $('#e-title').value; e.date = $('#e-date').value;
+  e.duration = parseInt($('#e-duration').value) || 0;
+  e.orgName = $('#e-org').value; e.teacherName = $('#e-teacher').value;
+  e.mode = $('#e-mode').value; e.passScore = parseInt($('#e-passScore').value) || 50;
+  e.active = $('#e-active').checked; e.showFeedback = $('#e-feedback').checked;
+  e.hasCert = $('#e-cert').checked; e.checkId = $('#e-cid').checked; e.checkPhone = $('#e-cph').checked;
+  
+  document.querySelectorAll('#qs .q').forEach(el => {
+    var i = +el.dataset.i, q = e.questions[i], t = el.querySelector('.qtype-sel').value;
+    q.text = el.querySelector('.qt').value;
+    if(t !== q.type) { q.type = t; q.correct = 0; if(t === 'mcq' && q.options.length < 2) q.options = ['', '', '', '']; }
+    else if(q.type === 'mcq') q.options = [].map.call(el.querySelectorAll('.ot'), x => x.value);
+    var c = el.querySelector('input[type=radio]:checked'); if(c) q.correct = +c.value;
+  });
+}
+
+async function saveExam(btn) {
+  syncEd(); var e = ui.ed;
+  var qs = e.questions.map(q => ({
+    text: q.text.trim(), type: q.type,
+    options: q.type === 'tf' ? [] : q.options.map(x => x.trim()).filter(Boolean),
+    correct: q.correct
+  })).filter(q => q.text);
+
+  var err = '';
+  if(!e.title.trim()) err = 'اكتبي عنوان الاختبار';
+  else if(!qs.length) err = 'أضيفي سؤالًا واحدًا على الأقل';
+
+  if(err) { ui.eerr = err; drawAdmin(); return; }
+  ui.eerr = ''; busy(btn, 'جاري الحفظ...');
+
+  var exData = {
+    code: e.code || ('x' + uid() + uid()),
+    title: e.title.trim(), date: e.date, duration: e.duration,
+    orgName: e.orgName, teacherName: e.teacherName,
+    active: e.active, showFeedback: e.showFeedback, hasCert: e.hasCert,
+    passScore: e.passScore, mode: e.mode, checkId: e.checkId, checkPhone: e.checkPhone,
+    questions: qs
+  };
+
+  try {
+    if(e.id) {
+      await setDoc(doc(db, "exams", e.id), exData, { merge: true });
+      var idx = A.exams.findIndex(x => x.id === e.id);
+      if(idx >= 0) A.exams[idx] = { id: e.id, ...exData };
+    } else {
+      const docRef = await addDoc(collection(db, "exams"), exData);
+      A.exams.unshift({ id: docRef.id, ...exData });
+    }
+    ui.ed = null; toast('تم حفظ الاختبار بنجاح'); drawAdmin();
+  } catch(errEx) {
+    unbusy(btn); ui.eerr = 'تعذر الحفظ في Firebase'; drawAdmin();
+  }
+}
+
+function listHtml(kind, title, ph) {
+  var l = A[kind];
+  return '<div class="card"><h3 style="margin-top:0">' + title + '</h3><textarea id="add-' + kind + '" aria-label="' + title + '" placeholder="' + ph + '"></textarea>' +
+   '<div class="row" style="margin:8px 0"><button class="pri" data-act="add-list" data-k="' + kind + '">إضافة</button><button data-act="all-list" data-k="' + kind + '" data-on="1">تفعيل الكل</button><button data-act="all-list" data-k="' + kind + '" data-on="0">إغلاق الكل</button></div>' +
+   '<input id="q-' + kind + '" placeholder="بحث..." aria-label="بحث" style="margin-bottom:8px"><div class="sub" style="margin-bottom:6px">' + l.length + ' رقم</div>' +
+   '<div class="tw"><table id="tb-' + kind + '">' + l.map(i => '<tr data-s="' + esc(i.v + ' ' + i.label) + '"><td>' + esc(i.v) + '<div class="sub">' + esc(i.label) + '</div></td><td><button class="' + (i.on ? '' : 'dan') + '" data-act="tog-list" data-k="' + kind + '" data-v="' + esc(i.v) + '">' + (i.on ? 'مفعّل' : 'مغلق') + '</button></td><td><button data-act="del-list" data-k="' + kind + '" data-v="' + esc(i.v) + '">✕</button></td></tr>').join('') + '</table></div></div>';
+}
+
+function tabLists() {
+  return '<div class="two">' + listHtml('ids', 'أرقام الهويات', 'كل رقم في سطر') + listHtml('phones', 'أرقام الجوالات', 'كل رقم جوال في سطر') + '</div>';
+}
+
+async function pushList(k) {
+  try { await setDoc(doc(db, "lists", k), { items: A[k] }); } catch(e) { toast('تعذر حفظ القائمة', true); }
+}
+
+function pct(r) { return r.total ? Math.round(r.score / r.total * 100) : 0; }
+function fdate(t) { try { return new Date(t).toLocaleString('ar-SA'); } catch(e){ return ''; } }
+
+function statsOf(ex, rs) {
+  var n = rs.length; if(!n) return { n: 0 };
+  var p = rs.map(pct), sum = p.reduce((a, b) => a + b, 0);
+  return {
+    n: n, avg: Math.round(sum / n), max: Math.max(...p), min: Math.min(...p),
+    pass: Math.round(p.filter(x => x >= (ex.passScore || 50)).length / n * 100),
+    errRate: ex.questions.map((q, i) => {
+      var wrongCnt = rs.filter(r => !r.answers || r.answers[i] !== q.correct).length;
+      return Math.round((wrongCnt / n) * 100);
+    })
+  };
+}
+
+function exportExcel(exId) {
+  var ex = A.exams.find(e => e.id === exId);
+  var rs = A.results.filter(r => r.examId === exId);
+  if(!rs.length) { toast('لا توجد نتائج للتصدير', true); return; }
+
+  var data = rs.map((r, idx) => ({
+    "م": idx + 1,
+    "اسم الطالبة": r.name,
+    "رقم الهوية": r.nid,
+    "رقم الجوال": r.phone,
+    "الدرجة": r.score,
+    "الدرجة الكلية": r.total,
+    "النسبة المئوية": pct(r) + "%",
+    "تاريخ ووقت الاختبار": fdate(r.at)
+  }));
+
+  var ws = XLSX.utils.json_to_sheet(data);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "النتائج");
+  XLSX.writeFile(wb, "نتائج_" + (ex ? ex.title : "الاختبار") + ".xlsx");
+}
+
+function tabResults() {
+  var v = ui.rv.view;
+  if(v === 'stu') return '<div id="resbody"></div>';
+  var ph = v === 'list' ? 'ابحثي عن اختبار أو اسم طالبة...' : 'ابحثي عن طالبة في هذا الاختبار...';
+  return '<div class="card"><input id="rs" aria-label="بحث" placeholder="' + ph + '" value="' + esc(ui.rq) + '"></div><div id="resbody"></div>';
+}
+
+function match(r, q) {
+  if(!q) return true;
+  var t = (r.name + ' ' + r.nid + ' ' + r.phone).toLowerCase(), d = digits(q);
+  return t.indexOf(q.toLowerCase()) >= 0 || (d.length >= 3 && (r.nid.indexOf(d) >= 0 || r.phone.indexOf(d) >= 0));
+}
+
+function stuTable(rs, showExam) {
+  if(!rs.length) return '<div class="sub">لا توجد نتائج.</div>';
+  return '<div class="tw"><table><tr><th>الاسم</th>' + (showExam ? '<th>الاختبار</th>' : '') + '<th>الهوية</th><th>الجوال</th><th>الدرجة</th><th>التاريخ</th></tr>' + rs.map(r => {
+    var ex = A.exams.find(e => e.id === r.examId);
+    return '<tr><td><button class="pick" style="padding:4px 10px" data-act="open-stu" data-id="' + esc(r.id) + '">' + esc(r.name) + '</button></td>' + (showExam ? '<td>' + esc(ex ? ex.title : 'اختبار محذوف') + '</td>' : '') + '<td>' + esc(r.nid) + '</td><td>' + esc(r.phone) + '</td><td><b>' + r.score + '/' + r.total + '</b> <span class="sub">' + pct(r) + '%</span></td><td class="sub">' + esc(fdate(r.at)) + '</td></tr>';
+  }).join('') + '</table></div>';
+}
+
+function drawResBody() {
+  var box = $('#resbody'); if(!box) return;
+  var v = ui.rv, q = ui.rq.trim(), h = '';
+  if(v.view === 'list') {
+    var exs = A.exams.filter(e => !q || e.title.toLowerCase().indexOf(q.toLowerCase()) >= 0);
+    h += exs.map(e => {
+      var rs = A.results.filter(r => r.examId === e.id), s = statsOf(e, rs);
+      return '<div class="card pick" data-act="open-exam" data-id="' + e.id + '"><div class="row"><b class="grow">' + esc(e.title) + '</b><span class="tag ' + (e.active ? 't-on' : 't-off') + '">' + (e.active ? 'مفتوح' : 'مغلق') + '</span></div>' +
+       '<div class="sub">' + esc(e.date) + ' · ' + rs.length + ' طالبة' + (s.n ? ' · المتوسط ' + s.avg + '%' : '') + '</div></div>';
+    }).join('') || (q ? '' : '<div class="card">لا توجد اختبارات بعد.</div>');
+  } else if(v.view === 'exam') {
+    var ex = A.exams.find(e => e.id === v.ex);
+    if(!ex) { ui.rv = { view: 'list' }; drawAdmin(); return; }
+    var all = A.results.filter(r => r.examId === ex.id), s2 = statsOf(ex, all);
+    h += '<div class="row" style="margin-bottom:12px"><button data-act="back-list">← كل الاختبارات</button><b class="grow">' + esc(ex.title) + '</b><button class="pri" data-act="export-excel" data-id="' + ex.id + '">📊 تصدير Excel</button></div>';
+    if(!s2.n) h += '<div class="card">لا توجد نتائج لهذا الاختبار بعد.</div>';
+    else {
+      h += '<div class="sgrid"><div class="sbox"><b>' + s2.n + '</b><span class="sub">عدد الطالبات</span></div><div class="sbox"><b>' + s2.avg + '%</b><span class="sub">المتوسط</span></div><div class="sbox"><b>' + s2.max + '%</b><span class="sub">الأعلى</span></div><div class="sbox"><b>' + s2.min + '%</b><span class="sub">الأدنى</span></div><div class="sbox"><b>' + s2.pass + '%</b><span class="sub">نسبة الاجتياز</span></div></div>';
+      
+      // تحليل الأسئلة ونسبة الخطأ لتمييز الصعبة
+      h += '<div class="card"><h3 style="margin-top:0">تحليل الأسئلة والأكثر صعوبة (نسبة الخطأ > 50%)</h3><div class="tw"><table>' + ex.questions.map((qq, i) => {
+        var errP = s2.errRate[i];
+        var isHard = errP > 50;
+        return '<tr class="' + (isHard ? 'hard-q' : '') + '"><td style="width:100%">' + (i+1) + '. ' + esc(qq.text) + (isHard ? ' 🔥 <b>(سؤال صعب)</b>' : '') + '</td><td><div class="pbar"><i style="width:' + errP + '%"></i></div></td><td><b>خطأ: ' + errP + '%</b></td></tr>';
+      }).join('') + '</table></div></div>';
+    }
+    var fl = all.filter(r => match(r, q)).sort((a, b) => b.at - a.at);
+    h += '<div class="card"><h3 style="margin-top:0">الطالبات (' + fl.length + ')</h3>' + stuTable(fl, false) + '</div>';
+  } else {
+    var r = A.results.find(x => x.id === v.rid);
+    var ex2 = r && A.exams.find(e => e.id === r.examId);
+    if(!r || !ex2) { ui.rv = { view: 'list' }; drawAdmin(); return; }
+    h += '<div class="row" style="margin-bottom:12px"><button data-act="back-exam" data-id="' + ex2.id + '">← ' + esc(ex2.title) + '</button><span class="grow"></span><button class="dan" data-act="del-res" data-id="' + esc(r.id) + '">' + (ui.delRes === r.id ? 'اضغطي للتأكيد' : 'حذف النتيجة') + '</button></div>';
+    h += '<div class="card"><h3 style="margin-top:0">' + esc(r.name) + '</h3><div class="sub">الهوية: ' + esc(r.nid) + ' · الجوال: ' + esc(r.phone) + ' · ' + esc(fdate(r.at)) + '</div><div style="font-size:26px;font-weight:700;color:var(--primary);margin-top:6px">' + r.score + ' / ' + r.total + ' <span class="sub">' + pct(r) + '%</span></div></div>';
+    h += ex2.questions.map((qq, i) => {
+      var o = optsOf(qq), a = r.answers ? r.answers[i] : null;
+      var okq = a === qq.correct;
+      return '<div class="rq"><b>' + (i+1) + '. ' + esc(qq.text) + '</b> <span class="tag ' + (okq ? 't-on' : 't-off') + '">' + (okq ? 'صحيحة' : (a == null ? 'بدون إجابة' : 'خاطئة')) + '</span>' +
+       o.map((t, k) => { var c = k === qq.correct ? 'good' : (k === a ? 'bad' : ''); return '<div class="ro ' + c + '">' + (k === qq.correct ? '✓ ' : (k === a ? '✗ ' : '')) + esc(t) + (k === a ? ' <span class="sub">(إجابتها)</span>' : '') + '</div>'; }).join('') + '</div>';
+    }).join('');
+  }
+  box.innerHTML = h;
+}
+
+/* ================= الأحداث ================= */
+document.addEventListener('input', ev => {
+  var id = ev.target.id || '';
+  if(id === 'rs') { ui.rq = ev.target.value; drawResBody(); }
+  else if(id.indexOf('q-') === 0) {
+    var k = id.slice(2), v = ev.target.value;
+    document.querySelectorAll('#tb-' + k + ' tr').forEach(r => { r.style.display = r.dataset.s.indexOf(v) >= 0 ? '' : 'none'; });
+  }
+});
+
+document.addEventListener('change', ev => {
+  if(ev.target.classList.contains('qtype-sel') && ui.ed) { syncEd(); drawAdmin(); }
+});
+
+$('#dark-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
+
+document.addEventListener('click', async ev => {
+  var b = ev.target.closest('[data-act]'); if(!b) return;
+  var a = b.dataset.act;
+
+  if(a === 's-start') {
+    var name = $('#s-name').value.trim().replace(/\s+/g, ' '), nid = digits($('#s-id').value), ph = normPhone($('#s-ph').value);
+    var err = '';
+    if(name.split(' ').length < 3) err = 'اكتبي اسمك الثلاثي كاملًا';
+    else if(nid.length < 5) err = 'رقم الهوية غير صحيح';
+    else if(ph.length < 9) err = 'رقم الجوال غير صحيح';
+
+    if(err) { st.err = err; drawStudent(); return; }
+    busy(b, 'جاري التحقق...');
+
+    try {
+      if(st.info.checkId) {
+        const idsDoc = await getDoc(doc(db, "lists", "ids"));
+        const list = idsDoc.exists() ? idsDoc.data().items || [] : [];
+        if(!list.some(x => x.v === nid && x.on)) {
+          unbusy(b); st.err = 'رقم الهوية غير مسجل أو غير مفعّل'; drawStudent(); return;
+        }
+      }
+      if(st.info.checkPhone) {
+        const phDoc = await getDoc(doc(db, "lists", "phones"));
+        const list = phDoc.exists() ? phDoc.data().items || [] : [];
+        if(!list.some(x => x.v === ph && x.on)) {
+          unbusy(b); st.err = 'رقم الجوال غير مسجل أو غير مفعّل'; drawStudent(); return;
+        }
+      }
+
+      const resCheck = await getDocs(query(collection(db, "results"), where("examId", "==", st.examId), where("nid", "==", nid)));
+      if(!resCheck.empty) {
+        unbusy(b); st.err = 'لقد قمتِ بإجراء هذا الاختبار سابقًا'; drawStudent(); return;
+      }
+
+      st.studentData = { name, nid, phone: ph };
+      st.qs = st.info.questions;
+      st.a = new Array(st.qs.length).fill(null);
+      st.i = 0; st.err = ''; st.step = 'quiz';
+      drawStudent(); window.scrollTo(0,0);
+      if(st.info.duration > 0) startTimer(st.info.duration);
+    } catch(e) {
+      unbusy(b); st.err = 'حدث خطأ أثناء البدء'; drawStudent();
+    }
+    return;
+  }
+
+  if(a === 's-pick') { st.a[st.i] = +b.dataset.i; st.err = ''; drawStudent(); return; }
+  if(a === 's-prev') { if(st.i) st.i--; drawStudent(); return; }
+  if(a === 's-next') {
+    if(st.i < st.qs.length - 1) { st.i++; st.warned = false; st.err = ''; drawStudent(); return; }
+    var left = st.a.filter(x => x === null).length;
+    if(left && !st.warned) {
+      st.warned = true;
+      st.err = 'بقي ' + left + ' سؤال بدون إجابة. اضغطي إنهاء مرة ثانية للإرسال.';
+      drawStudent(); return;
+    }
+    busy(b, 'جاري الإرسال...');
+    submitExam(false);
+    return;
+  }
+
+  if(a === 'login') {
+    var p = $('#pw').value.trim();
+    if(p === ADMIN_PASSWORD) {
+      pw = p; try { sessionStorage.setItem('akt_pw', p); } catch(e){}
+      ui.loginErr = ''; loadAdmin();
+    } else { ui.loginErr = 'كلمة المرور خاطئة'; drawAdmin(); }
+    return;
+  }
+
+  if(a === 'logout') { logout(); return; }
+  if(a === 'refresh') { loadAdmin(); return; }
+  if(a === 'tab') { syncEd(); ui.tab = b.dataset.t; ui.rq = ''; ui.rv = { view: 'list' }; drawAdmin(); return; }
+  if(a === 'new-exam') { ui.ed = { title: '', date: new Date().toISOString().slice(0,10), duration: 0, orgName: '', teacherName: '', active: true, showFeedback: true, hasCert: true, passScore: 50, mode: 'score', checkId: false, checkPhone: false, questions: [blankQ()] }; ui.eerr = ''; drawAdmin(); return; }
+  if(a === 'edit') { ui.ed = JSON.parse(JSON.stringify(A.exams.find(e => e.id === b.dataset.id))); ui.eerr = ''; drawAdmin(); return; }
+  if(a === 'cancel-exam') { ui.ed = null; drawAdmin(); return; }
+  if(a === 'add-q') { syncEd(); ui.ed.questions.push(blankQ()); drawAdmin(); return; }
+  if(a === 'rm-q') { syncEd(); ui.ed.questions.splice(+b.dataset.i, 1); if(!ui.ed.questions.length) ui.ed.questions.push(blankQ()); drawAdmin(); return; }
+  if(a === 'add-opt') { syncEd(); ui.ed.questions[+b.dataset.i].options.push(''); drawAdmin(); return; }
+  if(a === 'save-exam') { saveExam(b); return; }
+  if(a === 'copy-link') { var e1 = A.exams.find(e => e.id === b.dataset.id); copy(examLink(e1), ok => toast(ok ? 'تم نسخ الرابط' : 'تعذر النسخ', !ok)); return; }
+  if(a === 'export-excel') { exportExcel(b.dataset.id); return; }
+  if(a === 'toggle') {
+    var e2 = A.exams.find(e => e.id === b.dataset.id);
+    e2.active = !e2.active; drawAdmin();
+    try { await setDoc(doc(db, "exams", e2.id), { active: e2.active }, { merge: true }); } catch(err){ toast('تعذر تغيير الحالة', true); }
+    return;
+  }
+  if(a === 'del') {
+    if(ui.delId === b.dataset.id) {
+      var delId = ui.delId; ui.delId = null;
+      A.exams = A.exams.filter(e => e.id !== delId);
+      A.results = A.results.filter(r => r.examId !== delId);
+      drawAdmin();
+      try {
+        await deleteDoc(doc(db, "exams", delId));
+        const resQuery = await getDocs(query(collection(db, "results"), where("examId", "==", delId)));
+        resQuery.forEach(async rDoc => { await deleteDoc(doc(db, "results", rDoc.id)); });
+      } catch(e) { toast('تعذر الحذف', true); }
+    } else { ui.delId = b.dataset.id; drawAdmin(); }
+    return;
+  }
+
+  if(a === 'add-list') {
+    var k = b.dataset.k, n = 0;
+    $('#add-' + k).value.split('\n').forEach(line => {
+      var p = line.split(/[,\-\t]/), v = k === 'ids' ? digits(p[0]) : normPhone(p[0]);
+      if(v.length >= (k === 'ids' ? 5 : 9) && !A[k].some(i => i.v === v)) {
+        A[k].push({ v: v, label: (p[1] || '').trim(), on: true }); n++;
+      }
+    });
+    if(n) { pushList(k); toast('تمت إضافة ' + n); }
+    drawAdmin(); return;
+  }
+  if(a === 'all-list') { A[b.dataset.k].forEach(i => i.on = b.dataset.on === '1'); pushList(b.dataset.k); drawAdmin(); return; }
+  if(a === 'tog-list') { var it = A[b.dataset.k].find(i => i.v === b.dataset.v); if(it) it.on = !it.on; pushList(b.dataset.k); drawAdmin(); return; }
+  if(a === 'del-list') { A[b.dataset.k] = A[b.dataset.k].filter(i => i.v !== b.dataset.v); pushList(b.dataset.k); drawAdmin(); return; }
+
+  if(a === 'open-exam') { ui.rv = { view: 'exam', ex: b.dataset.id }; ui.rq = ''; drawAdmin(); window.scrollTo(0,0); return; }
+  if(a === 'open-stu') { ui.rv = { view: 'stu', rid: b.dataset.id }; ui.delRes = null; drawAdmin(); window.scrollTo(0,0); return; }
+  if(a === 'back-list') { ui.rv = { view: 'list' }; ui.rq = ''; drawAdmin(); return; }
+  if(a === 'back-exam') { ui.rv = { view: 'exam', ex: b.dataset.id }; ui.rq = ''; drawAdmin(); return; }
+  if(a === 'del-res') {
+    if(ui.delRes === b.dataset.id) {
+      var rid = ui.delRes, ex3 = A.results.find(r => r.id === rid).examId;
+      ui.delRes = null; A.results = A.results.filter(r => r.id !== rid);
+      ui.rv = { view: 'exam', ex: ex3 }; drawAdmin();
+      try { await deleteDoc(doc(db, "results", rid)); } catch(e){ toast('تعذر حذف النتيجة', true); }
+    } else { ui.delRes = b.dataset.id; drawResBody(); }
+    return;
+  }
+});
+
+if(CODE) initStudent();
+else if(pw) loadAdmin();
+else drawAdmin();
+</script>
+</body>
+</html>
