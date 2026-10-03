@@ -100,6 +100,16 @@ details.more summary{cursor:pointer;font-weight:700;color:var(--primary);padding
 .bnav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--surface);border-top:3px solid var(--gold);z-index:70}
 .bnav button{flex:1;border-radius:0;background:transparent;padding:8px 2px;font-size:12px;display:flex;flex-direction:column;gap:2px;align-items:center;color:var(--muted)}.bnav button.on{color:var(--primary);background:var(--soft)}.bnav b{font-size:20px}
 .cert-box{background:#fffdf6}.cert-box h2{font-size:38px}.c-bism{font-family:var(--fd);font-size:22px;color:var(--cc)}.lgo{max-height:80px;max-width:160px;margin:6px auto;display:block}.orn{color:var(--cc);letter-spacing:6px}
+/* شهادة مستطيلة 4×3 */
+.cert-box{container-type:inline-size;aspect-ratio:4/3;padding:1.6cqw;border-width:1.4cqw;border-radius:1.5cqw;display:flex}
+.cert-box .c-in{flex:1;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:1.4cqw 3cqw;border-radius:.8cqw}
+.cert-box h2{font-size:6cqw;margin:0}.cert-box p{font-size:2.5cqw;margin:.4cqw 0;line-height:1.6}
+.cert-box .c-name{font-size:4.6cqw;margin:.4cqw 0}.c-bism{font-size:3cqw}.lgo{max-height:9cqw;max-width:20cqw;margin:0}
+.seal{width:8cqw;height:8cqw;font-size:3.6cqw;box-shadow:0 0 0 .4cqw #fff,0 0 0 .6cqw var(--cc,#a8832c)}.orn{font-size:2.2cqw}
+.cert-box .c-foot{width:100%;margin-top:0}.c-foot span{font-size:1.9cqw!important}.c-foot svg{width:9cqw;height:auto}
+.sig{margin-top:3cqw;min-width:15cqw}.cn{font-size:1.4cqw}
+@page{size:A4 landscape;margin:8mm}
+@media print{.cert-box{width:250mm!important;left:calc(50% - 125mm)!important;top:0}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 </head>
