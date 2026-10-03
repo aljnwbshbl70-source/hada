@@ -1,4 +1,4 @@
-here<!doctype html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
@@ -84,6 +84,22 @@ a.b{display:inline-block;text-decoration:none;border-radius:12px;padding:11px 18
 .sig{border-top:1.5px solid #14261e;margin-top:26px;padding-top:4px;min-width:130px}
 .cn{font-size:12px;color:#5d6f66;direction:ltr}.cert-box .c-foot{align-items:flex-end}
 @media(max-width:600px){table.stack tr:first-child{display:none}table.stack tr{display:block;border:1px solid var(--line);border-radius:12px;margin:8px 0;padding:6px}table.stack td{display:block;border:0;padding:4px 8px}}
+header.top{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M28 4l6 14 14-6-6 14 14 6-14 6 6 14-14-6-6 14-6-14-14 6 6-14-14-6 14-6-6-14 14 6z' fill='none' stroke='%23e6c46f' stroke-opacity='.22'/%3E%3C/svg%3E"),linear-gradient(160deg,var(--h1),var(--h2))}
+.top.cp{padding:12px 16px 30px;border-radius:0 0 26px 26px}.cp .lg{width:42px;height:42px;font-size:18px;margin:0}.cp .bism{font-size:14px}.cp h1{font-size:16px}
+main{margin:-22px auto 110px}.card{box-shadow:0 2px 10px rgba(15,90,67,.08)}
+body.dark-mode{--bg:#0f2219;--surface:#16301f;--soft:#1d3d2d;--line:#2b4c3a}
+.floating-dark{top:12px;bottom:auto;left:12px;width:38px;height:38px;opacity:.85}
+.toast{bottom:70px;inset-inline:14px;border-radius:12px}
+.dua::after{content:'❖ ✦ ❖';display:block;color:var(--gold);font-size:13px;letter-spacing:6px;font-family:var(--fb)}
+.sec{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-size:19px;color:var(--primary)}.sec::before,.sec::after{content:'';flex:1;height:1px;background:var(--gold);opacity:.5}
+.chip{background:var(--soft);color:var(--primary);border-radius:20px;padding:3px 11px;font-size:13px;font-weight:500}
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.agrid button,.agrid a.b,.mgrid button{padding:11px 4px;text-align:center;font-size:14px;width:100%}
+details.more summary{cursor:pointer;font-weight:700;color:var(--primary);padding:10px;text-align:center;background:var(--bg);border:1px dashed var(--line);border-radius:12px;margin-top:8px;list-style:none}
+.sw{position:relative;width:52px;height:30px;border-radius:20px;padding:0;background:var(--line)}.sw::after{content:'';position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}.sw.on{background:var(--primary)}.sw.on::after{inset-inline-start:25px}
+.bnav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--surface);border-top:3px solid var(--gold);z-index:70}
+.bnav button{flex:1;border-radius:0;background:transparent;padding:8px 2px;font-size:12px;display:flex;flex-direction:column;gap:2px;align-items:center;color:var(--muted)}.bnav button.on{color:var(--primary);background:var(--soft)}.bnav b{font-size:20px}
+.cert-box{background:#fffdf6}.cert-box h2{font-size:38px}.c-bism{font-family:var(--fd);font-size:22px;color:var(--cc)}.lgo{max-height:80px;max-width:160px;margin:6px auto;display:block}.orn{color:var(--cc);letter-spacing:6px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 </head>
@@ -112,7 +128,7 @@ function copy(text, done) {
   try { var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); var ok = document.execCommand('copy'); document.body.removeChild(ta); if (ok) return done(true); } catch (e) {}
   try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch (e) { done(false); }
 }
-function shell(inner, title, wide) { return (PREVIEW ? '<div class="err" style="margin:0;border-radius:0;text-align:center">🧪 وضع التجربة: لن تُحفظ أي نتيجة</div>' : '') + '<header class="top"><div class="bism">بسم الله الرحمن الرحيم</div><div class="lg">سبل</div><h1>' + esc(title || 'منصة الاختبارات والشهادات') + '</h1></header><main' + (wide ? ' class="wide"' : '') + '>' + inner + '</main>'; }
+function shell(inner, title, wide) { return (PREVIEW ? '<div class="err" style="margin:0;border-radius:0;text-align:center">🧪 وضع التجربة: لن تُحفظ أي نتيجة</div>' : '') + '<header class="top' + (wide ? ' cp' : '') + '"><div class="bism">بسم الله الرحمن الرحيم</div><div class="lg">سبل</div><h1>' + esc(title || 'منصة الاختبارات والشهادات') + '</h1></header><main' + (wide ? ' class="wide"' : '') + '>' + inner + '</main>'; }
 const optsOf = q => q.type === 'tf' ? ['صح', 'خطأ'] : q.options;
 const busy = (b, t) => { b.disabled = true; b.dataset.t = b.textContent; b.textContent = t; };
 const unbusy = b => { b.disabled = false; if (b.dataset.t) b.textContent = b.dataset.t; };
@@ -127,13 +143,14 @@ const COL = { green: '#0f5a43', navy: '#1f3a6b', plum: '#6b2a5a', teal: '#0b6b6e
 const colorOf = e => COL[e && e.color] || COL.green;
 function applyColor(c) { var x = COL[c]; if (!x) return; var z = document.documentElement.style; z.setProperty('--primary', x); z.setProperty('--h2', x); z.setProperty('--h1', 'color-mix(in srgb,#000 40%,' + x + ')'); }
 function qrSvg(u) { try { var q = qrcode(0, 'M'); q.addData(u); q.make(); return q.createSvgTag(3); } catch (e) { return ''; } }
+function certDate(t) { var d = new Date(t), o = { day: 'numeric', month: 'long', year: 'numeric' }, f = c => d.toLocaleDateString('ar-SA-u-ca-' + c, o); return f('islamic-umalqura') + ' هـ<br>الموافق ' + f('gregory') + ' م<br>' + d.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }); }
 function certHtml(ex, r) {
-  var vu = r.cn ? location.origin + location.pathname + '?v=' + r.cn : '';
-  return '<div class="cert-box" style="--cc:' + colorOf(ex) + '"><div class="c-in"><div class="seal">سبل</div><h2>شهادة اجتياز</h2>' +
-    '<p>تشهد <b>' + esc(ex.orgName || 'إدارة المنصة') + '</b> بأن الطالبة:</p><span class="c-name">' + esc(r.name) + '</span>' +
+  var vu = r.cn ? location.origin + location.pathname + '?v=' + r.cn : '', lg = (A.pub && A.pub.logo) || (st.links && st.links.logo) || '';
+  return '<div class="cert-box" style="--cc:' + colorOf(ex) + '"><div class="c-in"><div class="c-bism">بسم الله الرحمن الرحيم</div>' + (lg ? '<img class="lgo" src="' + esc(lg) + '" alt="">' : '<div class="seal">✦</div>') + '<h2>شهادة اجتياز</h2><div class="orn">❖ ✦ ❖</div>' +
+    '<p>تشهد <b>' + esc(ex.orgName || 'الإدارة') + '</b> بأن الطالبة:</p><span class="c-name">' + esc(r.name) + '</span>' +
     '<p>قد اجتازت بنجاح اختبار <b>«' + esc(ex.title) + '»</b><br>بدرجة <b>' + r.score + ' / ' + r.total + '</b> (' + pct(r) + '%)</p>' +
     '<p>' + esc(ex.certText || 'بارك الله في علمكِ وزادكِ توفيقًا ونجاحًا.') + '</p>' +
-    '<div class="c-foot"><span>التاريخ:<br>' + new Date(r.at).toLocaleDateString('ar-SA') + '</span>' + (vu ? '<span>' + qrSvg(vu) + '<div class="cn">' + esc(r.cn) + '</div></span>' : '') + '<span>المعلمة: ' + esc(ex.teacherName || 'مُعلمة المادة') + '<div class="sig">التوقيع</div></span></div></div></div>' +
+    '<div class="c-foot"><span style="font-size:13px">' + certDate(r.at) + '</span>' + (vu ? '<span>' + qrSvg(vu) + '<div class="cn">' + esc(r.cn) + '</div></span>' : '') + '<span>المعلمة: ' + esc(ex.teacherName || 'مُعلمة المادة') + '<div class="sig">التوقيع</div></span>' + (ex.dirName ? '<span>المديرة: ' + esc(ex.dirName) + '<div class="sig">التوقيع</div></span>' : '') + '</div></div></div>' +
     '<button class="pri full" onclick="window.print()">🖨️ طباعة الشهادة / حفظ PDF</button>';
 }
 
@@ -184,7 +201,7 @@ function drawStudent() {
     h += '<h2>نتيجتك</h2><div class="gauge" style="--p:' + pp + '"><span>' + r.score + '/' + r.total + '</span></div><p style="font-weight:700;font-size:18px">' + (ok ? '🎉 ما شاء الله، مبارك نجاحكِ!' : '🌱 لا بأس، المحاولة بداية الطريق وأنتِ قادرة بإذن الله.') + '</p>'; if (ok) confetti();
     if (r.mode === 'full') h += r.wrong.length ? '<h3>الأسئلة التي أخطأتِ فيها</h3>' + r.wrong.map(w => '<div class="wrong"><b>' + w.n + '.</b> ' + esc(w.text) + '<div class="y">إجابتك: ' + esc(w.yours) + '</div><div class="c">الصحيحة: ' + esc(w.correct) + '</div></div>').join('') : '<p style="color:var(--primary);font-weight:700">ما شاء الله، إجاباتك كلها صحيحة!</p>';
     if (st.info.hasCert) {
-      var rr = { name: st.sd.name, score: r.score, total: r.total, at: Date.now(), cn: r.cn };
+      var rr = { name: st.sd.name, score: r.score, total: r.total, at: r.at, cn: r.cn };
       if (pct(rr) >= (st.info.passScore || 50)) h += certHtml(st.info, rr);
       else h += '<div class="err">لم تحققي نسبة النجاح المطلوبة للشهادة (' + (st.info.passScore || 50) + '%).</div>';
     }
@@ -222,7 +239,7 @@ async function submitExam() {
   });
   try {
     if (!PREVIEW) await setDoc(doc(db, "results", st.examId + '_' + st.sd.nid), { examId: st.examId, name: st.sd.name, nid: st.sd.nid, phone: st.sd.phone, answers: ans, score, total: st.qs.length, at: Date.now(), cn });
-    try { localStorage.removeItem('ans_' + st.examId + '_' + st.sd.nid); localStorage.removeItem('start_' + st.examId + '_' + st.sd.nid); } catch (e) {} st.res = { score, total: st.qs.length, mode: st.info.mode, wrong, cn }; st.step = 'done'; drawStudent(); scrollTo(0, 0);
+    try { localStorage.removeItem('ans_' + st.examId + '_' + st.sd.nid); localStorage.removeItem('start_' + st.examId + '_' + st.sd.nid); } catch (e) {} st.res = { score, total: st.qs.length, mode: st.info.mode, wrong, cn, at: Date.now() }; st.step = 'done'; drawStudent(); scrollTo(0, 0);
   } catch (e) { st.sending = false; st.err = 'تعذر إرسال الإجابات، تأكدي من الإنترنت وأعيدي المحاولة'; drawStudent(); }
 }
 
@@ -242,7 +259,7 @@ var A = { exams: [], ids: [], phones: [], results: [], pass: DEFAULT_PW, set: {}
 var ui = { tab: 'exams', ed: null, eerr: '', delId: null, rq: '', rv: { view: 'list' }, loginErr: '', loading: false, delRes: null, cert: null, certEd: null };
 const modeName = { sent: 'لا تعرض شيئًا (النتيجة تصل للإدارة فقط)', score: 'تعرض الدرجة فقط', full: 'تعرض الدرجة + الأسئلة الخاطئة والصحيحة' };
 
-async function loadPass() { try { var d = await getDoc(doc(db, "settings", "admin")); if (d.exists()) { A.set = d.data(); A.pass = d.data().password || DEFAULT_PW; } } catch (e) {} try { var q = await getDoc(doc(db, "settings", "public")); if (q.exists()) A.pub = q.data(); } catch (e) {} }
+async function loadPass() { try { var d = await getDoc(doc(db, "settings", "admin")); if (d.exists()) { A.set = d.data(); setBase(); A.pass = d.data().password || DEFAULT_PW; } } catch (e) {} try { var q = await getDoc(doc(db, "settings", "public")); if (q.exists()) A.pub = q.data(); } catch (e) {} }
 async function loadAdmin() {
   ui.loading = true; drawAdmin();
   try {
@@ -252,6 +269,8 @@ async function loadAdmin() {
   } catch (e) { toast('تعذر تحميل البيانات', true); }
   ui.loading = false; drawAdmin();
 }
+function upLogo(f) { if (!f) return; var r = new FileReader(); r.onload = () => { var im = new Image(); im.onload = async () => { var k = Math.min(1, 240 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); A.pub.logo = c.toDataURL('image/png'); try { await setDoc(doc(db, "settings", "public"), A.pub); toast('تم رفع الشعار'); } catch (e) { toast('تعذر الحفظ', true); } drawAdmin(); }; im.src = r.result; }; r.readAsDataURL(f); }
+function setBase() { A.base = A.set.site ? A.set.site.replace(/\/+$/, '') + '/' : location.origin + location.pathname; }
 const examLink = e => A.base + '?e=' + encodeURIComponent(e.code);
 
 function drawAdmin() {
@@ -265,24 +284,24 @@ function drawAdmin() {
     if (cr && ce) { D.innerHTML = shell('<div class="row"><button data-act="back-stu">← رجوع</button><button data-act="ce-open" data-id="' + ce.id + '">✏️ تعديل الشهادة</button></div>' + certHtml(ce, cr), 'شهادة ' + cr.name, true); return; }
     ui.cert = null;
   }
-  var tabs = [['exams', '📝 الاختبارات'], ['results', '📊 النتائج'], ['lists', '👥 القوائم المعتمدة'], ['set', '⚙️ الإعدادات']];
-  var h = '<div class="tabs">' + tabs.map(t => '<button data-act="tab" data-t="' + t[0] + '" class="' + (ui.tab === t[0] ? 'on' : '') + '">' + t[1] + '</button>').join('') + '<span class="grow"></span><button data-act="refresh">تحديث</button><button data-act="logout">خروج</button></div>';
+  var tabs = [['exams', '📝', 'الاختبارات'], ['results', '📊', 'النتائج'], ['lists', '👥', 'القوائم'], ['set', '⚙️', 'الإعدادات']], cur = tabs.find(t => t[0] === ui.tab);
+  var h = '<div class="row" style="margin-bottom:8px"><b class="grow" style="font-family:var(--fd);font-size:22px;color:var(--primary)">' + cur[1] + ' ' + cur[2] + '</b><button data-act="refresh" aria-label="تحديث">🔄</button><button data-act="logout">خروج</button></div>';
   h += ui.tab === 'exams' ? tabExams() : ui.tab === 'lists' ? tabLists() : ui.tab === 'set' ? tabSet() : tabResults();
-  D.innerHTML = shell(h, 'لوحة الإدارة', true);
+  D.innerHTML = shell(h, 'لوحة الإدارة', true) + '<nav class="bnav">' + tabs.map(t => '<button data-act="tab" data-t="' + t[0] + '" class="' + (ui.tab === t[0] ? 'on' : '') + '"><b>' + t[1] + '</b>' + t[2] + '</button>').join('') + '</nav>';
   if (ui.tab === 'results') drawResBody();
 }
 
 function certEdHtml(e) {
   return '<div id="ce"><button data-act="ce-back">← رجوع</button><div class="card" style="margin-top:12px"><h3 style="margin-top:0">🎓 تعديل شهادة «' + esc(e.title) + '»</h3>' + chk('ce-on', e.hasCert, 'السماح بظهور الشهادة للطالبات الناجحات') +
     '<label class="f" for="ce-org">اسم المنشأة</label><input id="ce-org" value="' + esc(e.orgName || '') + '"><label class="f" for="ce-teacher">اسم المعلمة</label><input id="ce-teacher" value="' + esc(e.teacherName || '') + '">' +
-    '<label class="f" for="ce-pass">نسبة النجاح %</label><input type="number" id="ce-pass" min="1" max="100" value="' + (e.passScore || 50) + '">' +
+    '<label class="f" for="ce-dir">اسم المديرة (اختياري، يظهر مع التوقيع)</label><input id="ce-dir" value="' + esc(e.dirName || '') + '"><label class="f" for="ce-pass">نسبة النجاح %</label><input type="number" id="ce-pass" min="1" max="100" value="' + (e.passScore || 50) + '">' +
     '<label class="f" for="ce-text">عبارة الدعاء أو الشكر في آخر الشهادة</label><textarea id="ce-text" placeholder="بارك الله في علمكِ وزادكِ توفيقًا ونجاحًا.">' + esc(e.certText || '') + '</textarea>' +
     '<label class="f">لون الشهادة</label><div class="swatch">' + Object.keys(COL).map(k => '<label><input type="radio" name="ce-color" value="' + k + '"' + ((e.color || 'green') === k ? ' checked' : '') + '><span style="background:' + COL[k] + '"></span></label>').join('') + '</div>' +
     '<button class="pri full" data-act="ce-save" data-id="' + e.id + '">حفظ الشهادة</button></div><div class="sub">معاينة مباشرة (بيانات تجريبية):</div><div id="ce-prev"></div></div>';
 }
 function drawCertPrev() {
   var e = A.exams.find(x => x.id === ui.certEd), box = $('#ce-prev'); if (!e || !box) return; var c = document.querySelector('input[name=ce-color]:checked');
-  box.innerHTML = certHtml({ ...e, orgName: $('#ce-org').value, teacherName: $('#ce-teacher').value, certText: $('#ce-text').value, color: c ? c.value : e.color }, { name: 'اسم الطالبة', score: 9, total: 10, at: Date.now() });
+  box.innerHTML = certHtml({ ...e, orgName: $('#ce-org').value, teacherName: $('#ce-teacher').value, dirName: $('#ce-dir').value, certText: $('#ce-text').value, color: c ? c.value : e.color }, { name: 'اسم الطالبة', score: 9, total: 10, at: Date.now() });
 }
 const isLive = e => e.active && !(e.date && today() > e.date);
 const byNew = (a, b) => (b.createdAt || 0) - (a.createdAt || 0);
@@ -303,24 +322,24 @@ function backup() {
   XLSX.writeFile(wb, 'نسخة_احتياطية_' + today() + '.xlsx');
 }
 function tabExams() {
-  return '<div style="margin-bottom:14px"><button class="pri" data-act="new-exam">+ اختبار جديد</button></div>' + (grouped(e => {
-    var cnt = A.results.filter(r => r.examId === e.id).length;
-    return '<div class="card"><div class="row"><b class="grow">' + esc(e.title) + '</b><span class="tag ' + (e.active ? 't-on' : 't-off') + '">' + (e.active ? 'مفتوح' : 'مغلق') + '</span></div>' +
-      '<div class="sub">ينتهي: ' + esc(e.date || 'بدون') + ' · ' + e.questions.length + ' سؤال · ' + cnt + ' طالبة · ' + (e.duration > 0 ? e.duration + ' دقيقة' : 'بدون مؤقت') + ' · ' + (e.hasCert ? 'فيه شهادة' : 'بدون شهادة') + '</div>' +
-      '<div class="link">' + esc(A.base + '?e=' + e.code) + '</div><div class="row"><button class="pri" data-act="copy-link" data-id="' + e.id + '">نسخ الرابط</button>' + (isLive(e) ? '<a class="b" target="_blank" rel="noopener" href="' + esc(examLink(e)) + '">↗ الذهاب للاختبار</a>' : '') + '<button data-act="preview" data-id="' + e.id + '">🧪 تجربة الاختبار</button><button data-act="tog-cert" data-id="' + e.id + '">' + (e.hasCert ? '🎓 إيقاف ظهور الشهادة' : '🎓 السماح بظهور الشهادة') + '</button><button data-act="ce-open" data-id="' + e.id + '">✏️ تعديل الشهادة</button>' +
-      '<button data-act="toggle" data-id="' + e.id + '">' + (e.active ? 'إغلاق' : 'فتح') + '</button><button data-act="edit" data-id="' + e.id + '">تعديل</button>' +
-      '<button data-act="dup" data-id="' + e.id + '">نسخ الاختبار</button><button data-act="open-exam" data-id="' + e.id + '">النتائج</button>' +
-      '<button class="dan" data-act="del" data-id="' + e.id + '">' + (ui.delId === e.id ? 'اضغطي للتأكيد' : 'حذف') + '</button></div></div>';
-  }) || '<div class="card">لا توجد اختبارات بعد، اضغطي "اختبار جديد".</div>');
+  var nd = d => { try { return new Date(d + 'T00:00').toLocaleDateString('ar-SA-u-ca-gregory', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return d; } };
+  return '<button class="pri full" style="margin:0 0 6px" data-act="new-exam">＋ اختبار جديد</button>' + (grouped(e => {
+    var cnt = A.results.filter(r => r.examId === e.id).length, d = ' data-id="' + e.id + '"', lv = isLive(e);
+    return '<div class="card"><div class="row"><b class="grow" style="font-size:18px">' + esc(e.title) + '</b><button class="sw' + (e.active ? ' on' : '') + '" data-act="toggle"' + d + ' aria-label="فتح أو إغلاق الاختبار"></button></div>' +
+      '<div class="sub" style="margin:2px 0 8px">' + (e.active ? (lv ? '🟢 مفتوح للطالبات' : '⏳ انتهى وقته') : '🔒 مغلق') + '</div>' +
+      '<div class="row" style="gap:6px">' + ['❓ ' + e.questions.length + ' سؤال', '👩‍🎓 ' + cnt + ' طالبة', e.duration > 0 ? '⏱ ' + e.duration + ' دقيقة' : '⏱ بدون مؤقت', e.date ? '📅 حتى ' + nd(e.date) : '', e.hasCert ? '🎓 فيه شهادة' : ''].filter(Boolean).map(c => '<span class="chip">' + c + '</span>').join('') + '</div>' +
+      '<div class="link">' + esc(A.base + '?e=' + e.code) + '</div>' +
+      '<div class="agrid"><button class="pri" data-act="share"' + d + '>📤 مشاركة</button>' + (lv ? '<a class="b" target="_blank" rel="noopener" href="' + esc(examLink(e)) + '">↗ الذهاب</a>' : '<button data-act="preview"' + d + '>🧪 تجربة</button>') + '<button data-act="open-exam"' + d + '>📊 النتائج</button></div>' +
+      '<details class="more"><summary>⋯ المزيد</summary><div class="mgrid"><button data-act="copy-link"' + d + '>🔗 نسخ الرابط</button>' + (lv ? '<button data-act="preview"' + d + '>🧪 تجربة</button>' : '') + '<button data-act="edit"' + d + '>✏️ تعديل الاختبار</button><button data-act="ce-open"' + d + '>🎓 تعديل الشهادة</button><button data-act="tog-cert"' + d + '>' + (e.hasCert ? '🚫 إيقاف الشهادة' : '🎓 السماح بالشهادة') + '</button><button data-act="dup"' + d + '>📄 نسخ الاختبار</button><button class="dan" data-act="del"' + d + '>' + (ui.delId === e.id ? 'اضغطي للتأكيد' : '🗑 حذف') + '</button></div></details></div>';
+  }) || '<div class="card">لا توجد اختبارات بعد، اضغطي «اختبار جديد».</div>');
 }
-
 const blankQ = () => ({ text: '', type: 'mcq', options: ['', '', '', ''], correct: 0 });
 const chk = (id, on, txt) => '<label class="chk"><input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + '> ' + txt + '</label>';
 
 function editorHtml() {
   var e = ui.ed;
   return '<div class="card"><h3 style="margin-top:0">1) المعلومات الأساسية</h3><label class="f" for="e-title">عنوان الاختبار</label><input id="e-title" value="' + esc(e.title) + '">' +
-    '<label class="f" for="e-slug">رابط الاختبار (يتكوّن من اسم الاختبار)</label><input id="e-slug" value="' + esc(e.code || '') + '" placeholder="يُكتب تلقائيًا من عنوان الاختبار"><div class="hint">' + (e.id ? 'تنبيه: تغيير الرابط يوقف الرابط القديم اللي أرسلتيه للطالبات.' : 'مثال: اختبار-الوحدة-الأولى') + '</div>' +
+    '<label class="f" for="e-slug">رابط الاختبار (كلمة قصيرة تظهر في الرابط)</label><input id="e-slug" value="' + esc(e.code || '') + '" placeholder="مثال: tawheed"><div class="hint">' + (e.id ? 'تنبيه: تغيير الرابط يوقف الرابط القديم اللي أرسلتيه للطالبات.' : 'يُفضّل كلمة إنجليزية قصيرة مثل: tawheed') + '</div>' +
     '<div class="two"><div><label class="f" for="e-date">آخر يوم للاختبار (يُغلق بنهاية اليوم)</label><input type="date" id="e-date" value="' + esc(e.date) + '"></div>' +
     '<div><label class="f" for="e-duration">المدة بالدقائق (0 = بدون مؤقت)</label><input type="number" min="0" id="e-duration" value="' + (e.duration || 0) + '"></div></div>' +
     '<div class="row" style="margin-top:10px">' + chk('e-active', e.active, 'الاختبار مفتوح للطالبات') + chk('e-shuf', e.shuffle, 'ترتيب الأسئلة عشوائي لكل طالبة') + '</div></div>' +
@@ -374,7 +393,7 @@ async function saveExam(btn) {
   });
   if (!err && !qs.length) err = 'أضيفي سؤالًا واحدًا على الأقل';
   if (err) { ui.eerr = err; drawAdmin(); scrollTo(0, document.body.scrollHeight); return; }
-  var code = e.code || slugify(e.title) || ('x' + uid());
+  var code = e.code || (/[a-z0-9]/i.test(e.title) ? slugify(e.title).replace(/[^\x00-\x7F]/g, '').replace(/^-+|-+$/g, '') : '') || ('e' + uid().slice(0, 4));
   if (A.exams.some(x => x.code === code && x.id !== e.id)) { ui.eerr = 'يوجد اختبار آخر بنفس الرابط، غيّري الرابط أو اسم الاختبار'; drawAdmin(); return; }
   ui.eerr = ''; busy(btn, 'جاري الحفظ...');
   var d = { code: code, color: e.color || 'green', welcome: (e.welcome || '').trim(), createdAt: e.createdAt || Date.now(), title: e.title.trim(), date: e.date || '', duration: e.duration, orgName: e.orgName, teacherName: e.teacherName, active: e.active, shuffle: e.shuffle, hasCert: e.hasCert, passScore: e.passScore, mode: e.mode, checkId: e.checkId, checkPhone: e.checkPhone, questions: qs };
@@ -396,7 +415,8 @@ const tabLists = () => '<div class="two">' + listHtml('ids', 'أرقام اله�
 function tabSet() {
   var t = A.set;
   return '<div class="two"><div class="card"><h3 style="margin-top:0">🔑 كلمة المرور</h3><label class="f" for="np">كلمة المرور الجديدة</label><input id="np" autocomplete="off" placeholder="4 خانات أو أكثر"><button class="pri full" data-act="save-pw">حفظ كلمة المرور</button></div>' +
-    '<div class="card"><h3 style="margin-top:0">🏫 قيم تُعبّأ تلقائيًا في الاختبارات الجديدة</h3><label class="f" for="d-org">اسم المنشأة</label><input id="d-org" value="' + esc(t.org || '') + '"><label class="f" for="d-teacher">اسم المعلمة</label><input id="d-teacher" value="' + esc(t.teacher || '') + '"><label class="f" for="d-pass">نسبة النجاح %</label><input type="number" id="d-pass" min="1" max="100" value="' + (t.pass || 50) + '"><button class="pri full" data-act="save-def">حفظ القيم</button></div></div>' +
+    '<div class="card"><h3 style="margin-top:0">🏫 قيم تُعبّأ تلقائيًا في الاختبارات الجديدة</h3><label class="f" for="d-org">اسم المنشأة</label><input id="d-org" value="' + esc(t.org || '') + '"><label class="f" for="d-teacher">اسم المعلمة</label><input id="d-teacher" value="' + esc(t.teacher || '') + '"><label class="f" for="d-site">رابط الموقع (يُبنى عليه رابط كل اختبار)</label><input id="d-site" dir="ltr" value="' + esc(t.site || '') + '" placeholder="https://اسمك.github.io/hada/"><label class="f" for="d-pass">نسبة النجاح %</label><input type="number" id="d-pass" min="1" max="100" value="' + (t.pass || 50) + '"><button class="pri full" data-act="save-def">حفظ القيم</button></div></div>' +
+    '<div class="card"><h3 style="margin-top:0">🖼️ شعار المنشأة (يظهر في الشهادة)</h3>' + (A.pub.logo ? '<img src="' + esc(A.pub.logo) + '" alt="" style="max-height:80px;display:block;margin:8px 0">' : '<div class="sub">لم يُرفع شعار، تظهر زخرفة بدلًا منه.</div>') + '<input type="file" id="l-logo" accept="image/*" style="margin-top:8px">' + (A.pub.logo ? '<button class="dan full" data-act="rm-logo">إزالة الشعار</button>' : '') + '</div>' +
     '<div class="card"><h3 style="margin-top:0">🔗 روابط المنشأة (تظهر كأزرار للطالبات في الاختبارات)</h3><label class="f" for="l-insta">رابط إنستغرام</label><input id="l-insta" dir="ltr" value="' + esc(A.pub.insta || '') + '" placeholder="https://instagram.com/..."><label class="f" for="l-wa">رابط واتساب</label><input id="l-wa" dir="ltr" value="' + esc(A.pub.wa || '') + '" placeholder="https://wa.me/966..."><div class="hint">اتركي الخانة فاضية لإخفاء الزر.</div><button class="pri full" data-act="save-links">حفظ الروابط</button></div>' +
     '<div class="card"><h3 style="margin-top:0">💾 نسخة احتياطية</h3><div class="sub">تنزيل نتائج كل الاختبارات في ملف Excel واحد.</div><button class="pri full" data-act="backup">تنزيل نسخة احتياطية</button></div>' +
     '<div class="card"><h3 style="margin-top:0">💡 نصائح</h3><div class="hint">غيّري كلمة المرور من 123 قبل الإطلاق.</div><div class="hint">حمّلي نسخة احتياطية بعد كل اختبار مهم.</div><div class="hint">جرّبي الاختبار بنفسك قبل إرسال الرابط للطالبات.</div><div class="hint">أغلقي الاختبار بعد انتهاء وقته من زر «إغلاق».</div></div>';
@@ -463,7 +483,7 @@ document.addEventListener('input', ev => {
   if (ui.certEd) drawCertPrev(); else if (id === 'rs') { ui.rq = ev.target.value; drawResBody(); }
   else if (id.indexOf('q-') === 0) { var k = id.slice(2), v = ev.target.value; document.querySelectorAll('#tb-' + k + ' tr').forEach(r => r.style.display = r.dataset.s.indexOf(v) >= 0 ? '' : 'none'); }
 });
-document.addEventListener('change', ev => { if (ev.target.classList.contains('qtype-sel') && ui.ed) { syncEd(); drawAdmin(); } else if (ui.certEd) drawCertPrev(); });
+document.addEventListener('change', ev => { if (ev.target.classList.contains('qtype-sel') && ui.ed) { syncEd(); drawAdmin(); } else if (ev.target.id === 'l-logo') upLogo(ev.target.files[0]); else if (ui.certEd) drawCertPrev(); });
 $('#dark-toggle').addEventListener('click', () => { document.body.classList.toggle('dark-mode'); try { localStorage.setItem('dark', document.body.classList.contains('dark-mode') ? '1' : '0'); } catch (e) {} });
 
 document.addEventListener('click', async ev => {
@@ -517,7 +537,7 @@ document.addEventListener('click', async ev => {
     try { await setDoc(doc(db, "settings", "admin"), { password: np }, { merge: true }); A.pass = np; A.set.password = np; pw = np; sessionStorage.setItem('akt_pw', np); $('#np').value = ''; toast('تم تغيير كلمة المرور'); } catch (e) { toast('تعذر الحفظ', true); }
     return;
   }
-  if (a === 'save-def') { var ps = Math.min(100, Math.max(1, parseInt($('#d-pass').value) || 50)); A.set = { ...A.set, org: $('#d-org').value.trim(), teacher: $('#d-teacher').value.trim(), pass: ps }; try { await setDoc(doc(db, "settings", "admin"), { org: A.set.org, teacher: A.set.teacher, pass: ps }, { merge: true }); toast('تم حفظ القيم'); } catch (x) { toast('تعذر الحفظ', true); } return; }
+  if (a === 'save-def') { var ps = Math.min(100, Math.max(1, parseInt($('#d-pass').value) || 50)); A.set = { ...A.set, org: $('#d-org').value.trim(), teacher: $('#d-teacher').value.trim(), pass: ps, site: $('#d-site').value.trim() ? fixLink($('#d-site').value, '') : '' }; setBase(); try { await setDoc(doc(db, "settings", "admin"), { org: A.set.org, teacher: A.set.teacher, pass: ps, site: A.set.site }, { merge: true }); toast('تم حفظ القيم'); } catch (x) { toast('تعذر الحفظ', true); } return; }
   if (a === 'backup') { backup(); return; }
   if (a === 'new-exam') { ui.ed = { title: '', date: today(), duration: 0, orgName: A.set.org || '', teacherName: A.set.teacher || '', active: true, shuffle: false, hasCert: false, passScore: A.set.pass || 50, color: 'green', welcome: '', mode: 'score', checkId: false, checkPhone: false, questions: [blankQ()] }; ui.eerr = ''; drawAdmin(); scrollTo(0, 0); return; }
   if (a === 'edit' || a === 'dup') {
@@ -533,17 +553,19 @@ document.addEventListener('click', async ev => {
   if (a === 'save-exam') { saveExam(b); return; }
   if (a === 'copy-link') { copy(examLink(A.exams.find(e => e.id === id)), ok => toast(ok ? 'تم نسخ الرابط' : 'تعذر النسخ', !ok)); return; }
   if (a === 'export-excel') { exportExcel(id); return; }
-  if (a === 'preview') { try { localStorage.setItem('akt_prev', Date.now()); } catch (e) {} window.open(examLink(A.exams.find(e => e.id === id)) + '&p=1', '_blank'); return; }
+  if (a === 'preview') { try { localStorage.setItem('akt_prev', Date.now()); } catch (e) {} window.open(location.origin + location.pathname + '?e=' + encodeURIComponent(A.exams.find(e => e.id === id).code) + '&p=1', '_blank'); return; }
   if (a === 'tog-cert') { var e5 = A.exams.find(e => e.id === id); e5.hasCert = !e5.hasCert; drawAdmin(); try { await setDoc(doc(db, "exams", id), { hasCert: e5.hasCert }, { merge: true }); toast(e5.hasCert ? 'ظهرت الشهادة للطالبات الناجحات' : 'تم إيقاف ظهور الشهادة'); } catch (x) { toast('تعذر التغيير', true); } return; }
   if (a === 'ce-open') { ui.certEd = id; ui.cert = null; drawAdmin(); scrollTo(0, 0); return; }
   if (a === 'ce-back') { ui.certEd = null; drawAdmin(); return; }
   if (a === 'ce-save') {
     var c5 = document.querySelector('input[name=ce-color]:checked'), e6 = A.exams.find(e => e.id === id), pv = Math.min(100, Math.max(1, parseInt($('#ce-pass').value) || 50));
-    Object.assign(e6, { orgName: $('#ce-org').value.trim(), teacherName: $('#ce-teacher').value.trim(), passScore: pv, certText: $('#ce-text').value.trim(), color: c5 ? c5.value : e6.color, hasCert: $('#ce-on').checked });
-    try { await setDoc(doc(db, "exams", id), { orgName: e6.orgName, teacherName: e6.teacherName, passScore: pv, certText: e6.certText, color: e6.color, hasCert: e6.hasCert }, { merge: true }); toast('تم حفظ الشهادة'); ui.certEd = null; } catch (x) { toast('تعذر الحفظ', true); }
+    Object.assign(e6, { orgName: $('#ce-org').value.trim(), teacherName: $('#ce-teacher').value.trim(), dirName: $('#ce-dir').value.trim(), passScore: pv, certText: $('#ce-text').value.trim(), color: c5 ? c5.value : e6.color, hasCert: $('#ce-on').checked });
+    try { await setDoc(doc(db, "exams", id), { orgName: e6.orgName, teacherName: e6.teacherName, dirName: e6.dirName, passScore: pv, certText: e6.certText, color: e6.color, hasCert: e6.hasCert }, { merge: true }); toast('تم حفظ الشهادة'); ui.certEd = null; } catch (x) { toast('تعذر الحفظ', true); }
     drawAdmin(); return;
   }
-  if (a === 'save-links') { A.pub = { insta: fixLink($('#l-insta').value, 'i'), wa: fixLink($('#l-wa').value, 'w') }; try { await setDoc(doc(db, "settings", "public"), A.pub); toast('تم حفظ الروابط'); } catch (x) { toast('تعذر الحفظ', true); } drawAdmin(); return; }
+  if (a === 'save-links') { A.pub = { ...A.pub, insta: fixLink($('#l-insta').value, 'i'), wa: fixLink($('#l-wa').value, 'w') }; try { await setDoc(doc(db, "settings", "public"), A.pub); toast('تم حفظ الروابط'); } catch (x) { toast('تعذر الحفظ', true); } drawAdmin(); return; }
+  if (a === 'rm-logo') { delete A.pub.logo; try { await setDoc(doc(db, "settings", "public"), A.pub); toast('تمت إزالة الشعار'); } catch (x) { toast('تعذر الحفظ', true); } drawAdmin(); return; }
+  if (a === 'share') { var e7 = A.exams.find(e => e.id === id); copy('📝 ' + e7.title + '\nرابط الدخول للاختبار:\n' + examLink(e7) + '\nبالتوفيق 🌿', ok => toast(ok ? 'تم نسخ رسالة المشاركة' : 'تعذر النسخ', !ok)); return; }
   if (a === 'toggle') {
     var e2 = A.exams.find(e => e.id === id); e2.active = !e2.active; drawAdmin();
     try { await setDoc(doc(db, "exams", id), { active: e2.active }, { merge: true }); } catch (x) { toast('تعذر تغيير الحالة', true); }
